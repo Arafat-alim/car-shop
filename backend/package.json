@@ -8,6 +8,9 @@
     "mongodb",
     "express"
   ],
+  "engines": {
+    "node": "22.x"
+  },
   "license": "ISC",
   "author": "Arafat Alim <arafat.aman.alim@gmail.com>",
   "type": "module",
@@ -20,7 +23,8 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "seed": "node src/utils/seed.js"
+    "seed": "node src/utils/seed.js",
+    "vercel-build": "echo Hello"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.0",
