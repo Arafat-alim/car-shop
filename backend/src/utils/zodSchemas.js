@@ -18,4 +18,9 @@ const updateCarSchema = z.object({
   description: z.string().optional().optional(),
 });
 
-export { carSchema, updateCarSchema };
+const loginSchema = z.object({
+  email: z.string().email('Invalid email'),
+  password: z.string().min(3, 'Password is required'),
+});
+
+export { carSchema, updateCarSchema, loginSchema };
