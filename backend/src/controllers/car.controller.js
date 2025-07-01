@@ -24,6 +24,8 @@ const handleGetCarById = asyncHandler(async (req, res) => {
 });
 
 const handlePostCar = asyncHandler(async (req, res) => {
+  console.log('🚀 ~ handlePostCar ~ req:', req.user);
+
   const result = carSchema.safeParse(req.body);
 
   if (!result.success) {

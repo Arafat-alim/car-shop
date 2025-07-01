@@ -5,7 +5,7 @@ const getAllCars = async () => {
 };
 
 const getCarById = async (id) => {
-  return await Car.find(id).populate('createdBy', 'email');
+  return await Car.find({ _id: id }).populate('createdBy', 'email');
 };
 
 const createCar = async (carData) => {

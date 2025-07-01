@@ -9,6 +9,7 @@ const carSchema = new mongoose.Schema(
     image: { type: String, required: true },
     description: { type: String },
     slug: { type: String, required: true, unique: true },
+    createdBy: { type: String, required: true },
   },
   { timestamps: true },
 );
