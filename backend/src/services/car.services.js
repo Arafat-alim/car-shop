@@ -1,4 +1,4 @@
-import { Car } from '../models/car.models';
+import { Car } from '../models/car.models.js';
 
 const getAllCars = async () => {
   return await Car.find({}).populate('createdBy', 'email');
@@ -25,4 +25,4 @@ const deleteCar = async (id) => {
   return await Car.findByIdAndDelete(id);
 };
 
-export { getCarById, getAllCars, getAllCars, createCar, updateCar, deleteCar };
+export { getCarById, getAllCars, createCar, updateCar, deleteCar };
