@@ -19,7 +19,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "seed": "node src/utils/seed.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.0",
