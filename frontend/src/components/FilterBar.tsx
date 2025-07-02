@@ -1,7 +1,6 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 const FilterBar = () => {
@@ -12,18 +11,22 @@ const FilterBar = () => {
 
   const handleFilter = () => {
     const params = new URLSearchParams(searchParams);
+
     if (search) {
       params.set("search", search);
     } else {
       params.delete("search");
-      router.push(`/?${params.toString()}`);
     }
 
+    // Correctly set or remove 'year'
     if (year) {
-      params.set("year", search);
+      params.set("year", year);
     } else {
       params.delete("year");
     }
+
+    // Push updated params to the URL
+    router.push(`/?${params.toString()}`);
   };
 
   return (
