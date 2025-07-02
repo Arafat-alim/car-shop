@@ -5,12 +5,13 @@ import {
   handleLogout,
   handleRefreshToken,
 } from '../controllers/auth.controller.js';
+import { authMiddleware } from '../middlewares/auth.middleware.js';
 
 const authRouter = express.Router();
 
 authRouter.post('/login', handleLogin);
 authRouter.post('/refresh-token', handleRefreshToken);
-authRouter.post('/logout', handleLogout);
-authRouter.post('/me', handleGetMe);
+authRouter.post('/logout', authMiddleware, handleLogout);
+authRouter.post('/me', authMiddleware, handleGetMe);
 
 export { authRouter };
