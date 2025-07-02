@@ -1,32 +1,32 @@
 import Jwt from 'jsonwebtoken';
 
 const authMiddleware = async (req, res, next) => {
-  let error;
   try {
     if (!process.env.JWT_SECRET) {
       throw new Error('JWT_SECRET is not defined in environment variables');
     }
 
-    let token;
-    const authHeader = req.headers.Authorization || req.headers.authorization;
+    // Try to get token from cookies
+    let token = req.cookies?.accessToken;
 
-    if (authHeader && authHeader.startsWith('Bearer')) {
+    // If not in cookie, try Authorization header
+    const authHeader = req.headers.authorization || req.headers.Authorization;
+    if (!token && authHeader?.startsWith('Bearer')) {
       token = authHeader.split(' ')[1];
     }
 
     if (!token) {
-      error = new Error('No Token Provided, authorization denied');
-      error.status = 401;
-      throw error;
+      return res.status(401).json({
+        success: false,
+        message: 'No token provided, authorization denied',
+      });
     }
 
-    const decode = Jwt.verify(token, process.env.JWT_SECRET);
-
-    req.user = decode;
+    const decoded = Jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
 
     next();
   } catch (err) {
-    // Handle specific JWT errors
     if (err.name === 'TokenExpiredError') {
       return res.status(401).json({
         success: false,
@@ -36,13 +36,6 @@ const authMiddleware = async (req, res, next) => {
       return res.status(401).json({
         success: false,
         message: 'Invalid token',
-      });
-    } else if (
-      err.message === 'JWT_SECRET is not defined in environment variables'
-    ) {
-      return res.status(500).json({
-        success: false,
-        message: 'Server configuration error',
       });
     } else {
       return res.status(400).json({
