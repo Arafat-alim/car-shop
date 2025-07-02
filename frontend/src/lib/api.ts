@@ -53,6 +53,18 @@ export const getCars = async (
   return response?.data?.data;
 };
 
+export const searchCars = async (
+  query?: string,
+  year?: string
+): Promise<Car[]> => {
+  const params = new URLSearchParams();
+  if (query) params.append("q", query);
+  if (year) params.append("year", year);
+
+  const response = await api.get("/cars/search", { params });
+  return response?.data?.data;
+};
+
 export const getCarById = async (slug: string): Promise<Car> => {
   const cars = await getCars();
   const car = cars.find((c) => c.slug === slug);

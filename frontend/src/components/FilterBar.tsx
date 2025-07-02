@@ -1,56 +1,72 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-const FilterBar = () => {
-  const [search, setSearch] = useState("");
-  const [year, setYear] = useState("");
+interface FilterBarProps {
+  initialSearch?: string;
+  initialYear?: string;
+}
+
+const FilterBar = ({
+  initialSearch = "",
+  initialYear = "",
+}: FilterBarProps) => {
+  const [search, setSearch] = useState(initialSearch);
+  const [year, setYear] = useState(initialYear);
   const router = useRouter();
-  const searchParams = useSearchParams();
+
+  // Sync state with URL params on mount
+  useEffect(() => {
+    setSearch(initialSearch);
+    setYear(initialYear);
+  }, [initialSearch, initialYear]);
 
   const handleFilter = () => {
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams();
 
-    if (search) {
-      params.set("search", search);
+    if (search.trim()) {
+      params.set("q", search.trim());
     } else {
-      params.delete("search");
+      params.delete("q");
     }
 
-    // Correctly set or remove 'year'
-    if (year) {
-      params.set("year", year);
+    if (year.trim()) {
+      params.set("year", year.trim());
     } else {
       params.delete("year");
     }
 
-    // Push updated params to the URL
     router.push(`/?${params.toString()}`);
   };
+
+  // Optional: Add debounce for better UX
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      handleFilter();
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [search, year]);
 
   return (
     <div className="mb-6 flex flex-col sm:flex-row gap-4 animate-slide-up">
       <input
         type="text"
-        placeholder="Search by make or model"
+        placeholder="Search by make, model or description"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="p-2 border rounded-lg dark:bg-neutral-800 dark:border-neutral-700"
+        className="p-2 border rounded-lg dark:bg-neutral-800 dark:border-neutral-700 flex-1"
       />
       <input
         type="number"
         placeholder="Filter by year"
         value={year}
         onChange={(e) => setYear(e.target.value)}
-        className="p-2 border rounded-lg dark:bg-neutral-800 dark:border-neutral-700"
+        className="p-2 border rounded-lg dark:bg-neutral-800 dark:border-neutral-700 w-32"
+        min="1900"
+        max={new Date().getFullYear() + 1}
       />
-      <button
-        onClick={handleFilter}
-        className="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-secondary-dark transition-colors"
-      >
-        Filter
-      </button>
     </div>
   );
 };
