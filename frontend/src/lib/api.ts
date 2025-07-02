@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { Car } from "@/types";
+import { Car, User } from "@/types";
 import { getbaseUrl } from "@/utils/url";
 
 const API_URL = getbaseUrl();
@@ -32,6 +32,16 @@ api.interceptors.response.use(
   }
 );
 
+export const login = async (email: string, password: string) => {
+  const response = await api.post(
+    `/auth/login`,
+    { email, password },
+    { withCredentials: true }
+  );
+  console.log("response_", response);
+  return response.data;
+};
+
 export const getCars = async (
   search?: string,
   year?: string
@@ -62,4 +72,10 @@ export const updateCar = async (id: string, data: FormData): Promise<Car> => {
 
 export const deleteCar = async (id: string): Promise<void> => {
   await api.delete(`/cars/${id}`);
+};
+
+//! users
+export const getUsers = async (): Promise<User[]> => {
+  const response = await api.get("/users");
+  return response.data.data;
 };

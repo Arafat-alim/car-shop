@@ -30,7 +30,7 @@ export default function Navbar() {
     <nav className="bg-primary text-white p-4">
       <div className="container mx-auto flex justify-between items-center">
         <Link href={homePath()} className="text-xl font-bold">
-          Car Listing
+          🚘 Car Shop
         </Link>
         <div className="flex items-center space-x-4">
           <Link href={homePath()} className="hover:text-primary-light">
