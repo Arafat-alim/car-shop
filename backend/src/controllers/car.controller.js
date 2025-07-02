@@ -3,6 +3,7 @@ import * as carService from '../services/car.services.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { ApiError } from '../utils/ApiError.js';
 import { carSchema, updateCarSchema } from '../utils/zodSchemas.js';
+import { Car } from '../models/car.models.js';
 
 const handleGetAllCars = asyncHandler(async (req, res) => {
   const cars = await carService.getAllCars();
@@ -24,8 +25,6 @@ const handleGetCarById = asyncHandler(async (req, res) => {
 });
 
 const handlePostCar = asyncHandler(async (req, res) => {
-  console.log('🚀 ~ handlePostCar ~ req:', req.user);
-
   const result = carSchema.safeParse(req.body);
 
   if (!result.success) {
@@ -66,10 +65,37 @@ const handleDeleteCarById = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, null, 'Car deleted successfully'));
 });
 
+const handleGetCarsBySearch = asyncHandler(async (req, res) => {
+  const { q: searchQuery, year } = req.query;
+
+  const filter = {};
+
+  if (searchQuery) {
+    filter.$or = [
+      { make: { $regex: searchQuery, $options: 'i' } },
+      { model: { $regex: searchQuery, $options: 'i' } },
+      { description: { $regex: searchQuery, $options: 'i' } },
+    ];
+  }
+
+  if (year) {
+    filter.year = parseInt(year);
+  }
+
+  const cars = await Car.find(filter)
+    .populate('createdBy', 'email')
+    .sort({ createdAt: -1 });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, cars, 'Cars retrieved successfully'));
+});
+
 export {
   handleDeleteCarById,
   handleGetAllCars,
   handleGetCarById,
   handlePostCar,
   handleUpdateCarById,
+  handleGetCarsBySearch,
 };
