@@ -90,14 +90,14 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
     throw new ApiError(401, 'Invalid refresh token');
   }
 
-  const { accessToken, refreshToken: newRefreshToken } = generateTokens();
+  const { accessToken, refreshToken: newRefreshToken } = generateTokens(user);
 
   // update refresh token in database
   user.refreshToken = newRefreshToken;
   await user.save({ validateBeforeSave: false });
 
   // Set new Cookies
-  res.cookies('accessToken', accessToken, {
+  res.cookie('accessToken', accessToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
