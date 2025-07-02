@@ -1,7 +1,7 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
-
 import toast from "react-hot-toast";
 
 import { deleteCar } from "@/lib/api";
@@ -25,6 +25,7 @@ const AdminCarList = ({ cars, setCars }: AdminCarListProps) => {
       setCars(cars.filter((car) => car._id !== id));
       setDeleteTarget(null);
       toast.success("Car deleted successfully");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       toast.error(err.message || "Failed to delete car");
     }
@@ -87,9 +88,11 @@ const AdminCarList = ({ cars, setCars }: AdminCarListProps) => {
               {car.description}
             </p>
             {car.image && (
-              <img
+              <Image
                 src={car.image}
                 alt={`${car.make} ${car.model}`}
+                width={300}
+                height={160}
                 className="w-full h-40 object-cover rounded mb-2"
               />
             )}

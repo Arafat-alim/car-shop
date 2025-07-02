@@ -58,6 +58,7 @@ export default function AdminForm({ car, onSuccess }: AdminFormProps) {
           description: "",
         });
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.message || "Failed to save car");
     }

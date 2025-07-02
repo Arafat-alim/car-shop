@@ -39,6 +39,7 @@ export default async function Home({
           <div className="text-5xl mb-4">🚫</div>
           <h2 className="text-xl font-semibold mb-2">No Cars Found</h2>
           <p className="text-sm max-w-md">
+            {/* eslint-disable-next-line react/no-unescaped-entities */}
             We couldn't find any cars matching your criteria. Try adjusting your
             filters.
           </p>

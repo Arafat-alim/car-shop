@@ -20,7 +20,8 @@ export const getCurrentUser = async () => {
     });
 
     return response.data.data;
-  } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error: unknown) {
     return null;
   }
 };
@@ -33,7 +34,7 @@ export const logout = async () => {
 
     // Optional: reload page or route
     window.location.reload();
-  } catch (error) {
-    console.error("Logout failed", error);
+  } catch (err) {
+    console.error("Logout failed", err);
   }
 };

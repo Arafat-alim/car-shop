@@ -10,7 +10,7 @@ import { Car } from "@/types";
 
 export default function AdminPage() {
   const router = useRouter();
-  const [user, setUser] = useState<any>(null);
+  const [, setUser] = useState<unknown>(null);
   const [cars, setCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState(true);
 

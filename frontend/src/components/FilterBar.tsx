@@ -22,7 +22,7 @@ const FilterBar = ({
     setYear(initialYear);
   }, [initialSearch, initialYear]);
 
-  const handleFilter = () => {
+  const handleFilter = useCallback(() => {
     const params = new URLSearchParams();
 
     if (search.trim()) {
@@ -38,7 +38,7 @@ const FilterBar = ({
     }
 
     router.push(`/?${params.toString()}`);
-  };
+  }, [search, year, router]);
 
   // Optional: Add debounce for better UX
   useEffect(() => {
@@ -47,7 +47,7 @@ const FilterBar = ({
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [search, year]);
+  }, [search, year, handleFilter]);
 
   return (
     <div className="mb-6 flex flex-col sm:flex-row gap-4 animate-slide-up">
