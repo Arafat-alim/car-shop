@@ -14,7 +14,7 @@ export const login = async (email: string, password: string) => {
 
 export const getCurrentUser = async () => {
   try {
-    const response = await axios.get(`${API_URL}/auth/refresh-token`, {
+    const response = await axios.post(`${API_URL}/auth/me`, null, {
       withCredentials: true,
     });
 
@@ -25,6 +25,14 @@ export const getCurrentUser = async () => {
 };
 
 export const logout = async () => {
-  document.cookie = "accessToken=; Max-Age=0; path=/";
-  document.cookie = "refreshToken=; Max-Age=0; path=/";
+  try {
+    await axios.post(`${API_URL}/auth/logout`, null, {
+      withCredentials: true,
+    });
+
+    // Optional: reload page or route
+    window.location.reload();
+  } catch (error) {
+    console.error("Logout failed", error);
+  }
 };

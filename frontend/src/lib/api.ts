@@ -73,17 +73,17 @@ export const getCarById = async (slug: string): Promise<Car> => {
 };
 
 export const createCar = async (data: FormData): Promise<Car> => {
-  const response = await api.post("/cars", data);
+  const response = await api.post("/car", data);
   return response?.data?.data;
 };
 
 export const updateCar = async (id: string, data: FormData): Promise<Car> => {
-  const response = await api.put(`/cars/${id}`, data);
+  const response = await api.put(`/car/${id}`, data);
   return response?.data?.data;
 };
 
 export const deleteCar = async (id: string): Promise<void> => {
-  await api.delete(`/cars/${id}`);
+  await api.delete(`/car/${id}`);
 };
 
 //! users
