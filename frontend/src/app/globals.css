@@ -1,26 +1,140 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
+/* Define custom colors as CSS variables */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Primary color shades */
+  --color-primary: #1d4ed8;
+  --color-primary-light: #3b82f6;
+  --color-primary-dark: #1e40af;
+
+  /* Secondary color shades */
+  --color-secondary: #10b981;
+  --color-secondary-light: #34d399;
+  --color-secondary-dark: #059669;
+
+  /* Accent and Neutral colors */
+  --color-accent: #f59e0b;
+
+  --color-neutral-100: #f3f4f6;
+  --color-neutral-200: #e5e7eb;
+  --color-neutral-800: #1f2937;
+  --color-neutral-900: #111827;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Dark mode overrides */
+.dark {
+  /* Override variables here if needed for dark mode */
+  /* Example:
+  --color-primary: #...;
+  */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Custom utility classes using those variables */
+@layer utilities {
+  .bg-primary {
+    background-color: var(--color-primary);
+  }
+  .bg-primary-light {
+    background-color: var(--color-primary-light);
+  }
+  .bg-primary-dark {
+    background-color: var(--color-primary-dark);
+  }
+
+  .text-primary {
+    color: var(--color-primary);
+  }
+  .text-primary-light {
+    color: var(--color-primary-light);
+  }
+  .text-primary-dark {
+    color: var(--color-primary-dark);
+  }
+
+  .bg-secondary {
+    background-color: var(--color-secondary);
+  }
+  .bg-secondary-light {
+    background-color: var(--color-secondary-light);
+  }
+  .bg-secondary-dark {
+    background-color: var(--color-secondary-dark);
+  }
+
+  .text-secondary {
+    color: var(--color-secondary);
+  }
+  .text-secondary-light {
+    color: var(--color-secondary-light);
+  }
+  .text-secondary-dark {
+    color: var(--color-secondary-dark);
+  }
+
+  .bg-accent {
+    background-color: var(--color-accent);
+  }
+  .text-accent {
+    color: var(--color-accent);
+  }
+
+  .bg-neutral-100 {
+    background-color: var(--color-neutral-100);
+  }
+  .bg-neutral-200 {
+    background-color: var(--color-neutral-200);
+  }
+  .bg-neutral-800 {
+    background-color: var(--color-neutral-800);
+  }
+  .bg-neutral-900 {
+    background-color: var(--color-neutral-900);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Animations */
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Map keyframes to custom animation utilities */
+@layer utilities {
+  .animate-fade-in {
+    animation: fade-in 0.5s ease-in-out;
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.5s ease-in-out;
+  }
+
+  .animate-bounce {
+    animation: bounce 0.3s ease-in-out;
+  }
 }
