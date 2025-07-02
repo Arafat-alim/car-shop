@@ -3,6 +3,7 @@ import {
   handleDeleteCarById,
   handleGetAllCars,
   handleGetCarById,
+  handleGetCarsBySearch,
   handlePostCar,
   handleUpdateCarById,
 } from '../controllers/car.controller.js';
