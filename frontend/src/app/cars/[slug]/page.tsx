@@ -75,7 +75,7 @@ export default async function CarDetailPage({
             {car.make} {car.model}{" "}
             <span className="text-gray-500">({car.year})</span>
           </h1>
-          <p className="text-2xl my-4">${car.price.toLocaleString()}</p>
+          <p className="text-2xl my-4">₹{car.price.toLocaleString()}</p>
 
           {car.description && (
             <div className="prose dark:prose-invert">
