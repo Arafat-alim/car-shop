@@ -14,7 +14,7 @@ const CarCard = ({ car }: CarCardProps) => {
 
   return (
     <Link
-      href={`/cars/${car.slug}`}
+      href={`/cars/${car._id}`}
       className="group block max-w-xs sm:max-w-sm md:max-w-md w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300"
     >
       <div className="relative w-full h-44 sm:h-52 md:h-56 overflow-hidden rounded-t-2xl">

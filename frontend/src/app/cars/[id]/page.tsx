@@ -10,10 +10,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const car = await getCarById(params.slug);
   return {
-    title: `${car.make} ${car.model} (${car.year}) | CarShop`,
-    description: car.description || `Details for ${car.make} ${car.model}`,
+    title: `${car?.make} ${car?.model} (${car?.year}) | CarShop`,
+    description: car?.description || `Details for ${car?.make} ${car?.model}`,
     openGraph: {
-      images: [car.image],
+      images: [car?.image ? car.image : ""],
     },
   };
 }
@@ -21,29 +21,32 @@ export async function generateMetadata({
 export default async function CarDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: { id: string };
 }) {
-  const car = await getCarById(params.slug);
+  const paramsData = await params;
+  const fetchedArrData = await getCarById(paramsData.id);
+
+  const car = fetchedArrData?.[0];
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Car",
-    name: `${car.make} ${car.model}`,
-    image: car.image,
-    description: car.description,
-    brand: car.make,
-    vehicleModel: car.model,
-    modelDate: car.year,
+    name: `${car?.make} ${car?.model}`,
+    image: car?.image,
+    description: car?.description,
+    brand: car?.make,
+    vehicleModel: car?.model,
+    modelDate: car?.year,
     offers: {
       "@type": "Offer",
-      price: car.price,
+      price: car?.price,
       priceCurrency: "USD",
     },
   };
 
   // Validate image URL
   const isValidImage =
-    car.image && (car.image.startsWith("http") || car.image.startsWith("/"));
+    car?.image && (car.image.startsWith("http") || car.image.startsWith("/"));
 
   return (
     <div className="container mx-auto p-4">
@@ -72,12 +75,14 @@ export default async function CarDetailPage({
 
         <div>
           <h1 className="text-3xl font-bold">
-            {car.make} {car.model}{" "}
-            <span className="text-gray-500">({car.year})</span>
+            {car?.make} {car?.model}{" "}
+            <span className="text-gray-500">({car?.year})</span>
           </h1>
-          <p className="text-2xl my-4">₹{car.price.toLocaleString()}</p>
+          <p className="text-2xl my-4 text-bold">
+            ₹{car?.price ? car.price.toLocaleString() : "0"}
+          </p>
 
-          {car.description && (
+          {car?.description && (
             <div className="prose dark:prose-invert">
               <p>{car.description}</p>
             </div>
@@ -87,7 +92,7 @@ export default async function CarDetailPage({
             <h2 className="text-xl font-semibold">Seller Information</h2>
             <p>
               Posted by:{" "}
-              {typeof car.createdBy === "object"
+              {typeof car?.createdBy === "object"
                 ? car.createdBy.email
                 : "Admin"}
             </p>
