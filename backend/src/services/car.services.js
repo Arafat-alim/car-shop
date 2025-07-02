@@ -1,11 +1,12 @@
 import { Car } from '../models/car.models.js';
+import { ApiError } from '../utils/ApiError.js';
 
-const getAllCars = async () => {
-  return await Car.find({}).populate('createdBy', 'email');
+const getAllCars = async (filters = {}) => {
+  return await Car.find(filters).populate('createdBy', 'email');
 };
 
 const getCarById = async (id) => {
-  return await Car.find({ _id: id }).populate('createdBy', 'email');
+  return await Car.find(id).populate('createdBy', 'email');
 };
 
 const createCar = async (carData) => {
@@ -14,6 +15,8 @@ const createCar = async (carData) => {
 };
 
 const updateCar = async (id, carData) => {
+  const car = await Car.findById(id);
+  if (!car) throw new ApiError(404, 'Car not found');
   const slug = carData.make
     ? `${carData.make.toLowerCase().replace(/\s+/g, '-')}-${carData.year || (await Car.findById(id)).year}`
     : undefined;
@@ -22,7 +25,9 @@ const updateCar = async (id, carData) => {
 };
 
 const deleteCar = async (id) => {
-  return await Car.findByIdAndDelete(id);
+  const car = await Car.findByIdAndDelete(id);
+  if (!car) throw new ApiError(404, 'Car not found');
+  return car;
 };
 
 export { getCarById, getAllCars, createCar, updateCar, deleteCar };
