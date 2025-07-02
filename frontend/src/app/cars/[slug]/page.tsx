@@ -41,6 +41,10 @@ export default async function CarDetailPage({
     },
   };
 
+  // Validate image URL
+  const isValidImage =
+    car.image && (car.image.startsWith("http") || car.image.startsWith("/"));
+
   return (
     <div className="container mx-auto p-4">
       <script
@@ -49,13 +53,23 @@ export default async function CarDetailPage({
       />
 
       <div className="grid md:grid-cols-2 gap-8">
-        <div>
-          <Image
-            src={car.image}
-            alt={`${car.make} ${car.model}`}
-            className="w-full rounded-lg shadow-lg"
-          />
+        <div className="relative aspect-video">
+          {isValidImage ? (
+            <Image
+              src={car.image}
+              alt={`${car.make} ${car.model}`}
+              className="w-full h-full object-cover rounded-lg shadow-lg"
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+          ) : (
+            <div className="w-full h-full bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center">
+              <span className="text-gray-500">Image not available</span>
+            </div>
+          )}
         </div>
+
         <div>
           <h1 className="text-3xl font-bold">
             {car.make} {car.model}{" "}
