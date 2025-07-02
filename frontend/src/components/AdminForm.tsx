@@ -1,14 +1,16 @@
+"use client";
+
 import { useState } from "react";
 
 import { createCar, updateCar } from "@/lib/api";
 import { Car } from "@/types";
 
 type AdminFormProps = {
-  car: Car;
+  car?: Car;
   onSuccess: (car: Car) => void;
 };
 
-const AdminForm = ({ car, onSuccess }: AdminFormProps) => {
+export default function AdminForm({ car, onSuccess }: AdminFormProps) {
   const [formData, setFormData] = useState({
     make: car?.make || "",
     model: car?.model || "",
@@ -19,26 +21,33 @@ const AdminForm = ({ car, onSuccess }: AdminFormProps) => {
   });
   const [error, setError] = useState("");
 
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
 
     try {
-      const data = new FormData();
-      data.append("make", formData.make);
-      data.append("model", formData.model);
-      data.append("year", formData.year);
-      data.append("price", formData.price);
-      data.append("image", formData.image);
-      data.append("description", formData.description);
+      const carData = {
+        ...formData,
+        year: Number(formData.year),
+        price: Number(formData.price),
+      };
 
-      let updatedCar;
-
+      let result;
       if (car) {
-        updatedCar = await updateCar(car._id, data);
+        result = await updateCar(car._id, carData);
       } else {
-        updatedCar = await createCar(data);
+        result = await createCar(carData);
       }
-      onSuccess(updatedCar);
+
+      onSuccess(result);
+
       if (!car) {
         setFormData({
           make: "",
@@ -55,45 +64,46 @@ const AdminForm = ({ car, onSuccess }: AdminFormProps) => {
   };
 
   return (
-    <div className="mb-6 animate-slide-up">
-      <h2 className="text-2xl font-bold text-primary mb-4">
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md space-y-4"
+    >
+      <h2 className="text-2xl font-semibold text-primary">
         {car ? "Edit Car" : "Add New Car"}
       </h2>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="">Make</label>
-          <input type="text" />
-        </div>
-        <div>
-          <label htmlFor="">Model</label>
-          <input type="text" />
-        </div>
-        <div>
-          <label htmlFor="">Year</label>
-          <input type="text" />
-        </div>
-        <div>
-          <label htmlFor="">Price</label>
-          <input type="text" />
-        </div>
-        <div>
-          <label htmlFor="">Image Link</label>
-          <input type="text" />
-        </div>
-        <div>
-          <label htmlFor="">Description</label>
-          <input type="text" />
-        </div>
-        <button
-          type="submit"
-          className="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-secondary-dark transition-colors animate-bounce"
-        >
-          {car ? "Update Car" : "Add Car"}
-        </button>
-      </form>
-    </div>
-  );
-};
+      {error && <p className="text-red-500">{error}</p>}
 
-export default AdminForm;
+      {["make", "model", "year", "price", "image"].map((field) => (
+        <div key={field}>
+          <label className="block mb-1 capitalize">{field}</label>
+          <input
+            type="text"
+            name={field}
+            value={formData[field as keyof typeof formData]}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+            required
+          />
+        </div>
+      ))}
+
+      <div>
+        <label className="block mb-1">Description</label>
+        <textarea
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          rows={3}
+          className="w-full p-2 border rounded"
+        />
+      </div>
+
+      <button
+        type="submit"
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+      >
+        {car ? "Update Car" : "Add Car"}
+      </button>
+    </form>
+  );
+}

@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import toast from "react-hot-toast";
+
 import { deleteCar } from "@/lib/api";
 import { Car } from "@/types";
 
@@ -22,16 +24,21 @@ const AdminCarList = ({ cars, setCars }: AdminCarListProps) => {
       await deleteCar(id);
       setCars(cars.filter((car) => car._id !== id));
       setDeleteTarget(null);
+      toast.success("Car deleted successfully");
     } catch (err: any) {
-      alert(err.message || "Failed to delete car");
+      toast.error(err.message || "Failed to delete car");
     }
   };
 
   const handleSuccess = (newCar: Car) => {
-    if (editingCar) {
-      setCars(cars.map((c) => (c._id === newCar._id ? newCar : c)));
-    } else {
-      setCars([newCar, ...cars]);
+    if (newCar && newCar._id) {
+      if (editingCar) {
+        setCars(cars.map((c) => (c._id === newCar._id ? newCar : c)));
+        toast.success("Car updated successfully");
+      } else {
+        setCars([newCar, ...cars]);
+        toast.success("Car added successfully");
+      }
     }
     setEditingCar(null);
     setIsAdding(false);
