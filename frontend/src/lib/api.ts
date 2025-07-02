@@ -65,19 +65,25 @@ export const searchCars = async (
   return response?.data?.data;
 };
 
-export const getCarById = async (slug: string): Promise<Car> => {
-  const cars = await getCars();
-  const car = cars.find((c) => c.slug === slug);
-  if (!car) throw new Error("Car not found");
-  return car;
+export const getCarById = async (id: string): Promise<Car | null> => {
+  try {
+    const response = await api.get(`/car/${id}`);
+    return response?.data?.data || null;
+  } catch (error) {
+    console.error("Error fetching car by ID:", error);
+    return null;
+  }
 };
 
-export const createCar = async (data: FormData): Promise<Car> => {
+export const createCar = async (data: Omit<Car, "_id">): Promise<Car> => {
   const response = await api.post("/car", data);
   return response?.data?.data;
 };
 
-export const updateCar = async (id: string, data: FormData): Promise<Car> => {
+export const updateCar = async (
+  id: string,
+  data: Partial<Car>
+): Promise<Car> => {
   const response = await api.put(`/car/${id}`, data);
   return response?.data?.data;
 };
