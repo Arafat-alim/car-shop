@@ -32,16 +32,6 @@ api.interceptors.response.use(
   }
 );
 
-export const login = async (email: string, password: string) => {
-  const response = await api.post(
-    `/auth/login`,
-    { email, password },
-    { withCredentials: true }
-  );
-  console.log("response_", response);
-  return response.data;
-};
-
 export const getCars = async (
   search?: string,
   year?: string

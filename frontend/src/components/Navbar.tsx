@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { getCurrentUser, logout } from "@/lib/auth";
@@ -11,7 +11,7 @@ import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
   const [user, setUser] = useState<{ role: string } | null>(null);
-  // const router = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -24,6 +24,8 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     await logout();
+    router.push("/login");
+    router.refresh();
   };
 
   return (

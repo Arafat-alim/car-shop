@@ -2,7 +2,6 @@ import "./globals.css";
 
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
-
 import { Toaster } from "react-hot-toast";
 
 import Navbar from "@/components/Navbar";

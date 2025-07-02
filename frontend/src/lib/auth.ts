@@ -10,6 +10,7 @@ export const login = async (email: string, password: string) => {
     { email, password },
     { withCredentials: true }
   );
+  window.location.reload();
 };
 
 export const getCurrentUser = async () => {
