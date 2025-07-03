@@ -13,10 +13,15 @@ const morganFormat = ':method :url :status :response-time ms';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const corsOrigin = process.env.CORS_ORIGIN || '';
+const corsOriginArr = corsOrigin
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 //! common middlewares
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: corsOriginArr,
     credentials: true,
   }),
 );
