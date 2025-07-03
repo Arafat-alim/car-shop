@@ -168,4 +168,4 @@ To get a local copy up and running, follow these simple steps.
 
 ## 📄 License
 
-This project is licensed under the ISC License. See the `LICENSE` file for more details.
+This project is licensed under the ISC License. See the [LICENSE](LICENSE) file for more details.
