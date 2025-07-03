@@ -20,7 +20,13 @@ export function middleware(request: NextRequest) {
         accessToken,
         process.env.JWT_SECRET || "your_jwt_secret_key"
       );
-      if (decoded.role !== "admin") {
+
+      if (typeof decoded === "object" && "role" in decoded) {
+        if (decoded.role !== "admin") {
+          return NextResponse.redirect(new URL("/login", request.url));
+        }
+      } else {
+        // If the decoded token is a string or doesn't have a role field
         return NextResponse.redirect(new URL("/login", request.url));
       }
     } catch (error) {

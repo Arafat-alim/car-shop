@@ -5,12 +5,16 @@ import FilterBar from "@/components/FilterBar";
 import { searchCars } from "@/lib/api";
 import { getCurrentUser } from "@/lib/auth";
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: { q?: string; year?: string };
-}) {
-  const cars = await searchCars(searchParams?.q, searchParams?.year);
+type HomePageProps = {
+  searchParams: Promise<{
+    q?: string;
+    year?: string;
+  }>;
+};
+
+export default async function Home({ searchParams }: HomePageProps) {
+  const { q, year } = await searchParams;
+  const cars = await searchCars(q, year);
   const user = await getCurrentUser();
 
   return (
@@ -29,10 +33,7 @@ export default async function Home({
         )}
       </div>
 
-      <FilterBar
-        initialSearch={searchParams?.q || ""}
-        initialYear={searchParams?.year || ""}
-      />
+      <FilterBar initialSearch={q || ""} initialYear={year || ""} />
 
       {!cars || cars?.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center text-gray-500 dark:text-gray-400">

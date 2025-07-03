@@ -3,6 +3,11 @@ import axios from "axios";
 import { Car, User } from "@/types";
 import { getbaseUrl } from "@/utils/url";
 
+type CreateCarInput = Pick<
+  Car,
+  "make" | "model" | "year" | "price" | "image" | "description"
+>;
+
 const API_URL = getbaseUrl();
 
 const api = axios.create({
@@ -65,7 +70,7 @@ export const getCarById = async (id: string): Promise<Car | null> => {
   }
 };
 
-export const createCar = async (data: Omit<Car, "_id">): Promise<Car> => {
+export const createCar = async (data: CreateCarInput): Promise<Car> => {
   const response = await api.post("/car", data);
   return response?.data?.data;
 };

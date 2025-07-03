@@ -1,4 +1,3 @@
-import { Metadata } from "next";
 import Image from "next/image";
 
 import { getCarById } from "@/lib/api";
@@ -6,9 +5,10 @@ import { getCarById } from "@/lib/api";
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
-}): Promise<Metadata> {
-  const car = await getCarById(params.slug);
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const car = await getCarById(id);
   return {
     title: `${car?.make} ${car?.model} (${car?.year}) | CarShop`,
     description: car?.description || `Details for ${car?.make} ${car?.model}`,
@@ -21,12 +21,10 @@ export async function generateMetadata({
 export default async function CarDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const paramsData = await params;
-  const fetchedArrData = await getCarById(paramsData.id);
-
-  const car = fetchedArrData?.[0];
+  const { id } = await params;
+  const car = await getCarById(id);
 
   const jsonLd = {
     "@context": "https://schema.org",
