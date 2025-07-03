@@ -16,6 +16,16 @@ Welcome to Car Shop, your one-stop destination for finding the perfect car. This
 
 ![Project Walkthrough](frontend/public/shop-car-walkthrough.gif)
 
+## Test Account
+
+<details>
+<summary>Click to reveal credentials (for demo use)</summary>
+```env
+email: "admin@example.com"
+password: "admin123"
+```
+</details>
+
 ## 🛠️ Tech Stack
 
 **Frontend:**
@@ -80,6 +90,8 @@ To get a local copy up and running, follow these simple steps.
    git clone https://github.com/your-username/car-shop.git
    cd car-shop/backend
    ```
+
+````
 
 2. **Install dependencies:**
 
@@ -169,3 +181,4 @@ To get a local copy up and running, follow these simple steps.
 ## 📄 License
 
 This project is licensed under the ISC License. See the [LICENSE](LICENSE) file for more details.
+````
